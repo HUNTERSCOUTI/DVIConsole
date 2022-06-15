@@ -165,7 +165,7 @@ namespace DVIConsole
             "                                      |                                   ".ToCharArray(),
             "            ---------------           |                                   ".ToCharArray(),
             "           |Press x to exit|          |                                   ".ToCharArray(),
-            "            ---------------           |                                   ".ToCharArray() //29 long
+            "            ---------------           |                                   ".ToCharArray() //30 long
 
         };
     }
