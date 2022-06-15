@@ -10,6 +10,13 @@ namespace DVIConsole
 {
     class DVIMain
     {
+        /* TO DO LIST:
+                Temp and Humidity
+                Time Update constantly
+         */
+
+
+
         private static DVI dvi = new DVI();
         static void Main(string[] args)
         {
@@ -22,6 +29,7 @@ namespace DVIConsole
 
             while (true)
             {
+                dvi.ClockWriter();
                 t.Elapsed += (s, e) =>
                 {
                     Console.Clear();
@@ -35,7 +43,6 @@ namespace DVIConsole
 
         public static void Writer()
         {
-            dvi.ClockWriter();
             dvi.StockWriter();
             dvi.TempAndHumWriter();
             
@@ -101,13 +108,14 @@ namespace DVIConsole
             }
         }
 
-        public DateTime ClockLoader()
+        public DateTime ClockLoader() //https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.converttimefromutc?view=net-6.0#examples
         {
             DateTime timeUtc = DateTime.UtcNow;
 
             try
             {
                 TimeZoneInfo toTimezone = TimeZoneInfo.FindSystemTimeZoneById(timeZone[TimeZoneId]);
+                
 
                 DateTime time = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, toTimezone);
 
