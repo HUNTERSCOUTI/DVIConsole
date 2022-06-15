@@ -1,0 +1,10 @@
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\bin\Debug\DVIConsole.exe.config
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\bin\Debug\DVIConsole.exe
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\bin\Debug\DVIConsole.pdb
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\obj\Debug\DVIConsole.csproj.AssemblyReference.cache
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\obj\Debug\DVIConsole.csproj.SuggestedBindingRedirects.cache
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\obj\Debug\DVIConsole.csproj.CoreCompileInputs.cache
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\obj\Debug\DVIConsole.exe
+C:\Users\ZilasJ\source\repos\DVIConsole\DVIConsole\obj\Debug\DVIConsole.pdb
+C:\Users\ZilasJ\Source\Repos\DVIConsole\DVIConsole\bin\Debug\Json.Net.dll
+C:\Users\ZilasJ\Source\Repos\DVIConsole\DVIConsole\obj\Debug\DVIConsole.csproj.CopyComplete
