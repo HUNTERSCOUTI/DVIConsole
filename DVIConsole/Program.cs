@@ -1,5 +1,10 @@
 ﻿using System;
-using Timer = System.Timers.Timer;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.ServiceModel.Syndication;
+using System.Xml;
+using System.Linq;
+using System.Threading;
 
 namespace DVIConsole
 {
@@ -8,25 +13,32 @@ namespace DVIConsole
         private static DVI dvi = new DVI();
         static void Main(string[] args)
         {
-            Timer t = new Timer(10000); //300.000ms = 5 min
-            t.AutoReset = true; t.Start(); // Timer Settings & Start
-            Timer clock = new Timer(100); //300.000ms = 5 min
-            clock.AutoReset = true; clock.Start(); // Timer Settings & Start
+            Console.SetWindowSize(125, 35);
 
-            dvi.LayoutDraw();
+            dvi.LayoutWriter();
+            dvi.RSSLoader();
             Writer();
 
-            t.Elapsed += (s, e) =>
-            {
-                Console.Clear();
-                dvi.LayoutDraw();
-                Writer();
-            };
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Restart();
+
+            TimeSpan interval = TimeSpan.FromMilliseconds(300000); //300.000ms = 5 min
 
             while (true)
             {
-                dvi.ClockWriter();
-                if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break; // PRESS X TO EXIT
+                
+                    Console.CursorVisible = false;
+                    dvi.ClockLoader();
+
+                    if (stopwatch.Elapsed > interval)
+                    {
+                        Console.Clear();
+                        dvi.LayoutWriter();
+                        Writer();
+                        stopwatch.Restart();
+                    }
+
+                    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break; // PRESS X TO EXIT
             }
         }
 
@@ -34,14 +46,17 @@ namespace DVIConsole
         {
             dvi.StockWriter();
             dvi.TempAndHumWriter();
-            
+            dvi.RSSWriter();
         }
     }
 
     public class DVI
     {
-        //private readonly DVIService.monitorSoapClient ds = new DVIService.monitorSoapClient();
-        public void LayoutDraw()
+        private readonly DVIService.monitorSoapClient ds = new DVIService.monitorSoapClient();
+        private static RSS rss = new RSS();
+        List<string> headLines = new List<string>();
+
+        public void LayoutWriter()
         {
             Console.SetCursorPosition(0, 0);
             Console.ForegroundColor = ConsoleColor.White;
@@ -54,30 +69,54 @@ namespace DVIConsole
                 Console.WriteLine(); //Goes one line down
             }
         }
+
+        public void RSSWriter()
+        {
+            Console.SetCursorPosition(2, 32);
+
+            foreach (var line in headLines)
+            {
+                rss.News.Add(line);
+            }
+            rss.RunTheLine();
+        }
+
+        public void RSSLoader()
+        {
+            const string url = "https://nordjyske.dk/rss/nyheder";
+
+            var reader = XmlReader.Create(url);
+            var feed = SyndicationFeed.Load(reader);
+
+            reader.Close();
+
+            foreach (SyndicationItem title in feed.Items)
+            {
+                String hl = title.Title.Text;
+                headLines.Add(hl);
+            }
+        }
         public void StockWriter()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            for (var k = 0; k < 4; k++)
+            for (var k = 0; k < ds.StockItemsUnderMin().Count; k++)
             {
                 Console.SetCursorPosition(40, k+5);
-                //Console.Write(ds.StockItemsUnderMin()[k]);
-                Console.Write("TESTTESTTEST");
+                Console.Write(ds.StockItemsUnderMin()[k]);
             }
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            for (var j = 0; j < 2; j++)
+            for (var j = 0; j < ds.StockItemsOverMax().Count; j++)
             {
                 Console.SetCursorPosition(40, j+14);
-                //Console.Write(ds.StockItemsOverMax()[j]);
-                Console.Write("TESTTESTTEST");
+                Console.Write(ds.StockItemsOverMax()[j]);
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < ds.StockItemsMostSold().Count; i++)
             {
                 Console.SetCursorPosition(40, i+23);
-                //Console.Write(ds.StockItemsMostSold()[i]);
-                Console.Write("TESTTESTTEST");
+                Console.Write(ds.StockItemsMostSold()[i]);
             }
         }
         public void TempAndHumWriter()
@@ -85,20 +124,18 @@ namespace DVIConsole
             Console.ForegroundColor = ConsoleColor.Blue;
 
             Console.SetCursorPosition(8, 4);
-            //Console.Write(ds.StockTemp());
-            Console.Write("TESTTESTTEST");
+            Console.Write(ds.StockTemp());
+
             Console.SetCursorPosition(8, 5);
-            //Console.Write(ds.StockHumidity());
-            Console.Write("TESTTESTTEST");
+            Console.Write(ds.StockHumidity());
 
             Console.SetCursorPosition(8, 8);
-            //Console.Write(ds.OutdoorTemp());
-            Console.Write("TESTTESTTEST");
+            Console.Write(ds.OutdoorTemp());
+
             Console.SetCursorPosition(8, 9);
-            //Console.Write(ds.OutdoorHumidity());
-            Console.Write("TESTTESTTEST");
+            Console.Write(ds.OutdoorHumidity());
         }
-        public void ClockWriter()
+        public void ClockLoader()
         {
             DateTime timeUtc = DateTime.UtcNow;
 
@@ -147,7 +184,41 @@ namespace DVIConsole
             "                                      |                                   ".ToCharArray(),
             "            ---------------           |                                   ".ToCharArray(),
             "           |Press x to exit|          |                                   ".ToCharArray(),
-            "            ---------------           |                                   ".ToCharArray() //30 long
+            "            ---------------           |                                   ".ToCharArray(),
+            "                                      |                                   ".ToCharArray() //31 long
         };
+    }
+
+    public class RSS
+    {
+        public RSS() { }
+        public RSS(List<string> news)
+        {
+            foreach (var line in news)
+            {
+                this.News.Add(line);
+            } 
+        }
+
+        public List<string> News { get; set; } = new List<string>();
+
+        public void RunTheLine()
+        {
+            var allText = string.Join(" ", News.Select(t => t + new string(' ', 8)));
+            var visibleOnConsole = allText.ToList().GetRange(0, 80);
+            var notVisible = allText.ToList().GetRange(80, allText.Length - 80);
+
+            while (true)
+            {
+                Console.SetCursorPosition(2, 32);
+                Console.Write(new string(visibleOnConsole.ToArray()));
+                Thread.Sleep(200);
+                var c = visibleOnConsole[0];
+                visibleOnConsole.RemoveAt(0);
+                notVisible.Add(c);
+                visibleOnConsole.Add(notVisible[0]);
+                notVisible.RemoveAt(0);
+            }
+        }
     }
 }
