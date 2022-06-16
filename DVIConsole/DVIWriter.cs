@@ -1,56 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.ServiceModel.Syndication;
 using System.Xml;
-using System.Linq;
-using System.Threading;
 
 namespace DVIConsole
 {
-    class DVIMain
-    {
-        private static DVI dvi = new DVI();
-        static void Main(string[] args)
-        {
-            Console.SetWindowSize(125, 35);
-
-            dvi.LayoutWriter();
-            dvi.RSSLoader();
-            Writer();
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Restart();
-
-            TimeSpan interval = TimeSpan.FromMilliseconds(300000); //300.000ms = 5 min
-
-            while (true)
-            {
-                
-                    Console.CursorVisible = false;
-                    dvi.ClockLoader();
-
-                    if (stopwatch.Elapsed > interval)
-                    {
-                        Console.Clear();
-                        dvi.LayoutWriter();
-                        Writer();
-                        stopwatch.Restart();
-                    }
-
-                    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break; // PRESS X TO EXIT
-            }
-        }
-
-        public static void Writer()
-        {
-            dvi.StockWriter();
-            dvi.TempAndHumWriter();
-            dvi.RSSWriter();
-        }
-    }
-
-    public class DVI
+    public class DVIWriter
     {
         private readonly DVIService.monitorSoapClient ds = new DVIService.monitorSoapClient();
         private static RSS rss = new RSS();
@@ -187,38 +142,5 @@ namespace DVIConsole
             "            ---------------           |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray() //31 long
         };
-    }
-
-    public class RSS
-    {
-        public RSS() { }
-        public RSS(List<string> news)
-        {
-            foreach (var line in news)
-            {
-                this.News.Add(line);
-            } 
-        }
-
-        public List<string> News { get; set; } = new List<string>();
-
-        public void RunTheLine()
-        {
-            var allText = string.Join(" ", News.Select(t => t + new string(' ', 8)));
-            var visibleOnConsole = allText.ToList().GetRange(0, 80);
-            var notVisible = allText.ToList().GetRange(80, allText.Length - 80);
-
-            while (true)
-            {
-                Console.SetCursorPosition(2, 32);
-                Console.Write(new string(visibleOnConsole.ToArray()));
-                Thread.Sleep(200);
-                var c = visibleOnConsole[0];
-                visibleOnConsole.RemoveAt(0);
-                notVisible.Add(c);
-                visibleOnConsole.Add(notVisible[0]);
-                notVisible.RemoveAt(0);
-            }
-        }
     }
 }
