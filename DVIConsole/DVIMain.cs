@@ -10,28 +10,36 @@ namespace DVIConsole
         static void Main(string[] args)
         {
             Console.SetWindowSize(125, 35);
+            Console.Title = "WineSys";
             Console.CursorVisible = false;
 
             writer.LayoutWriter();
-            writer.RSSLoader();
+            //writer.RSSWriter();
             Writer();
 
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Restart();
+            DateTime updateTime = DateTime.Now.AddMinutes(5); // Sets the update time to 5 minutes
+            DateTime rssMove = DateTime.Now.AddMilliseconds(200);
 
-            TimeSpan interval = TimeSpan.FromMilliseconds(300000); //300.000ms = 5 min
+            int index = 0;
 
             while (true)
             {
-                writer.ClockLoader();
-                writer.RSSWriter();
-                
-                if (stopwatch.Elapsed > interval)
+                writer.ClockWriter();
+
+                if (DateTime.Now > rssMove) 
+                {
+                    writer.RSSWriter(index);
+                    index++;
+                    rssMove = DateTime.Now.AddMilliseconds(200);
+                }
+
+                if (DateTime.Now > updateTime) // Once the current time is more than the update time, it will reset
                 {
                     Console.Clear();
                     writer.LayoutWriter();
+                    //writer.RSSWriter();
                     Writer();
-                    stopwatch.Restart();
+                    updateTime = DateTime.Now.AddMinutes(5);
                 }
 
                 if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break; // PRESS X TO EXIT
@@ -39,9 +47,9 @@ namespace DVIConsole
         }
         public static void Writer()
         {
-            writer.StockWriter();
             writer.TempAndHumWriter();
-            
+            writer.StockWriter();
+
         }
     }
 }

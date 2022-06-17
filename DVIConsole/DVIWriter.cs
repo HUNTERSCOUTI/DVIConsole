@@ -28,18 +28,17 @@ namespace DVIConsole
             }
         }
 
-        public void RSSWriter()
+        public void RSSWriter(int index)
         {
-            Console.SetCursorPosition(1, 32);
+            RSSLoader();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(headLines[0]);
-            /*
+
             foreach (var line in headLines)
             {
                 rss.News.Add(line);
             }
-            rss.RunTheLine();
-            */
+            rss.RunTheLine(index);
+            
         }
 
         public void RSSLoader()
@@ -62,21 +61,21 @@ namespace DVIConsole
             Console.ForegroundColor = ConsoleColor.Red;
             for (var k = 0; k < ds.StockItemsUnderMin().Count; k++)
             {
-                Console.SetCursorPosition(40, k+5);
+                Console.SetCursorPosition(40, k+7);
                 Console.Write(ds.StockItemsUnderMin()[k]);
             }
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             for (var j = 0; j < ds.StockItemsOverMax().Count; j++)
             {
-                Console.SetCursorPosition(40, j+15);
+                Console.SetCursorPosition(40, j+17);
                 Console.Write(ds.StockItemsOverMax()[j]);
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
             for (var i = 0; i < ds.StockItemsMostSold().Count; i++)
             {
-                Console.SetCursorPosition(40, i+24);
+                Console.SetCursorPosition(40, i+26);
                 Console.Write(ds.StockItemsMostSold()[i]);
             }
         }
@@ -84,19 +83,19 @@ namespace DVIConsole
         {
             Console.ForegroundColor = ConsoleColor.Blue;
 
-            Console.SetCursorPosition(8, 5);
-            Console.Write(ds.StockTemp() + "°");
+            Console.SetCursorPosition(8, 7);
+            Console.Write(ds.StockTemp() + "° Celcius");
 
-            Console.SetCursorPosition(8, 6);
-            Console.Write(ds.StockHumidity() + "°");
+            Console.SetCursorPosition(8, 8);
+            Console.Write(ds.StockHumidity() + "° Celcius");
 
-            Console.SetCursorPosition(8, 10);
-            Console.Write(ds.OutdoorTemp() + "°");
+            Console.SetCursorPosition(8, 12);
+            Console.Write(ds.OutdoorTemp() + "° Celcius");
 
-            Console.SetCursorPosition(8, 11);
-            Console.Write(ds.OutdoorHumidity() + "°");
+            Console.SetCursorPosition(8, 13);
+            Console.Write(ds.OutdoorHumidity() + "° Celcius");
         }
-        public void ClockLoader()
+        public void ClockWriter()
         {
             DateTime timeUtc = DateTime.UtcNow;
 
@@ -106,48 +105,51 @@ namespace DVIConsole
 
             Console.ForegroundColor = ConsoleColor.Blue;
 
-            Console.SetCursorPosition(16, 16);
-            Console.Write(copenhagenTime.ToString()); // KØBENHAVN
             Console.SetCursorPosition(16, 18);
-            Console.Write(useast.ToString()); // USA ØST
+            Console.Write(copenhagenTime.ToString()); // KØBENHAVN
             Console.SetCursorPosition(16, 20);
+            Console.Write(useast.ToString()); // USA ØST
+            Console.SetCursorPosition(16, 22);
             Console.Write(singaporeTime.ToString()); // SINGAPORE
         }
 
         public static readonly char[][] Layout =
         {
-            "                                      |                                   ".ToCharArray(), //74 wide
+            "                                   WINESYS                                ".ToCharArray(), //74 wide
+            "                                                                          ".ToCharArray(),
+            "                                      |                                   ".ToCharArray(),
             "      Temperatur og Fugtighed         |         Lagerstatus               ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "  Lager                               | Varer under under minimum:        ".ToCharArray(),
             "  -------------                       | ----------------------------------".ToCharArray(),
-            "  Temp:                               |                                   ".ToCharArray(),
-            "  Fugt:                               |                                   ".ToCharArray(),
+            "  Temp: LOADING...                    | LOADING...                        ".ToCharArray(),
+            "  Fugt: LOADING...                    |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "  Udenfor                             |                                   ".ToCharArray(),
             "  -------------                       |                                   ".ToCharArray(),
-            "  Temp:                               |                                   ".ToCharArray(),
-            "  Fugt:                               |                                   ".ToCharArray(),
+            "  Temp: LOADING...                    |                                   ".ToCharArray(),
+            "  Fugt: LOADING...                    |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "--------------------------------------| Varer over maksimum:              ".ToCharArray(),
             "             Dato / Tid               | ----------------------------------".ToCharArray(),
+            "                                      | LOADING...                        ".ToCharArray(),
+            "   Koebenhavn : LOADING...            |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
-            "   Koebenhavn :                       |                                   ".ToCharArray(),
+            "   USA Est    : LOADING...            |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
-            "   USA Est    :                       |                                   ".ToCharArray(),
-            "                                      |                                   ".ToCharArray(),
-            "   Singapore  :                       |                                   ".ToCharArray(),
+            "   Singapore  : LOADING...            |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "                                      | Mest solgte i dag:                ".ToCharArray(),
             "                                      | ----------------------------------".ToCharArray(),
-            "                                      |                                   ".ToCharArray(),
+            "                                      | LOADING...                        ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "            ---------------           |                                   ".ToCharArray(),
             "           |Press x to exit|          |                                   ".ToCharArray(),
             "            ---------------           |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             " Top Nyhed:                           |                                   ".ToCharArray(),
-            " ---------------                      |                                   ".ToCharArray() //31 long
+            " ---------------                      |                                   ".ToCharArray(),
+            " LOADING...                           |                                   ".ToCharArray()//33 long
         };
     }
 }
