@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Xml;
 
 namespace DVIConsole
@@ -27,13 +30,16 @@ namespace DVIConsole
 
         public void RSSWriter()
         {
-            Console.SetCursorPosition(2, 32);
-
+            Console.SetCursorPosition(1, 32);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(headLines[0]);
+            /*
             foreach (var line in headLines)
             {
                 rss.News.Add(line);
             }
             rss.RunTheLine();
+            */
         }
 
         public void RSSLoader()
@@ -63,14 +69,14 @@ namespace DVIConsole
             Console.ForegroundColor = ConsoleColor.Yellow;
             for (var j = 0; j < ds.StockItemsOverMax().Count; j++)
             {
-                Console.SetCursorPosition(40, j+14);
+                Console.SetCursorPosition(40, j+15);
                 Console.Write(ds.StockItemsOverMax()[j]);
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
             for (var i = 0; i < ds.StockItemsMostSold().Count; i++)
             {
-                Console.SetCursorPosition(40, i+23);
+                Console.SetCursorPosition(40, i+24);
                 Console.Write(ds.StockItemsMostSold()[i]);
             }
         }
@@ -78,17 +84,17 @@ namespace DVIConsole
         {
             Console.ForegroundColor = ConsoleColor.Blue;
 
-            Console.SetCursorPosition(8, 4);
-            Console.Write(ds.StockTemp());
-
             Console.SetCursorPosition(8, 5);
-            Console.Write(ds.StockHumidity());
+            Console.Write(ds.StockTemp() + "°");
 
-            Console.SetCursorPosition(8, 8);
-            Console.Write(ds.OutdoorTemp());
+            Console.SetCursorPosition(8, 6);
+            Console.Write(ds.StockHumidity() + "°");
 
-            Console.SetCursorPosition(8, 9);
-            Console.Write(ds.OutdoorHumidity());
+            Console.SetCursorPosition(8, 10);
+            Console.Write(ds.OutdoorTemp() + "°");
+
+            Console.SetCursorPosition(8, 11);
+            Console.Write(ds.OutdoorHumidity() + "°");
         }
         public void ClockLoader()
         {
@@ -100,11 +106,11 @@ namespace DVIConsole
 
             Console.ForegroundColor = ConsoleColor.Blue;
 
-            Console.SetCursorPosition(16, 15);
+            Console.SetCursorPosition(16, 16);
             Console.Write(copenhagenTime.ToString()); // KØBENHAVN
-            Console.SetCursorPosition(16, 17);
+            Console.SetCursorPosition(16, 18);
             Console.Write(useast.ToString()); // USA ØST
-            Console.SetCursorPosition(16, 19);
+            Console.SetCursorPosition(16, 20);
             Console.Write(singaporeTime.ToString()); // SINGAPORE
         }
 
@@ -114,16 +120,17 @@ namespace DVIConsole
             "      Temperatur og Fugtighed         |         Lagerstatus               ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "  Lager                               | Varer under under minimum:        ".ToCharArray(),
-            "  Temp:                               |-----------------------------------".ToCharArray(),
-            "  Fugt:                               |                                   ".ToCharArray(),
-            "                                      |                                   ".ToCharArray(),
-            "  Udenfor                             |                                   ".ToCharArray(),
+            "  -------------                       | ----------------------------------".ToCharArray(),
             "  Temp:                               |                                   ".ToCharArray(),
             "  Fugt:                               |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
+            "  Udenfor                             |                                   ".ToCharArray(),
+            "  -------------                       |                                   ".ToCharArray(),
+            "  Temp:                               |                                   ".ToCharArray(),
+            "  Fugt:                               |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "--------------------------------------| Varer over maksimum:              ".ToCharArray(),
-            "             Dato / Tid               |-----------------------------------".ToCharArray(),
+            "             Dato / Tid               | ----------------------------------".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "   Koebenhavn :                       |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
@@ -132,15 +139,15 @@ namespace DVIConsole
             "   Singapore  :                       |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "                                      | Mest solgte i dag:                ".ToCharArray(),
-            "                                      |-----------------------------------".ToCharArray(),
-            "                                      |                                   ".ToCharArray(),
-            "                                      |                                   ".ToCharArray(),
+            "                                      | ----------------------------------".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
             "            ---------------           |                                   ".ToCharArray(),
             "           |Press x to exit|          |                                   ".ToCharArray(),
             "            ---------------           |                                   ".ToCharArray(),
-            "                                      |                                   ".ToCharArray() //31 long
+            "                                      |                                   ".ToCharArray(),
+            " Top Nyhed:                           |                                   ".ToCharArray(),
+            " ---------------                      |                                   ".ToCharArray() //31 long
         };
     }
 }

@@ -6,9 +6,11 @@ namespace DVIConsole
     class DVIMain
     {
         private static DVIWriter writer = new DVIWriter();
+        private static RSS rss = new RSS();
         static void Main(string[] args)
         {
             Console.SetWindowSize(125, 35);
+            Console.CursorVisible = false;
 
             writer.LayoutWriter();
             writer.RSSLoader();
@@ -21,25 +23,25 @@ namespace DVIConsole
 
             while (true)
             {
-                Console.CursorVisible = false;
-                    writer.ClockLoader();
+                writer.ClockLoader();
+                writer.RSSWriter();
+                
+                if (stopwatch.Elapsed > interval)
+                {
+                    Console.Clear();
+                    writer.LayoutWriter();
+                    Writer();
+                    stopwatch.Restart();
+                }
 
-                    if (stopwatch.Elapsed > interval)
-                    {
-                        Console.Clear();
-                        writer.LayoutWriter();
-                        Writer();
-                        stopwatch.Restart();
-                    }
-
-                    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break; // PRESS X TO EXIT
+                if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break; // PRESS X TO EXIT
             }
         }
         public static void Writer()
         {
             writer.StockWriter();
             writer.TempAndHumWriter();
-            writer.RSSWriter();
+            
         }
     }
 }

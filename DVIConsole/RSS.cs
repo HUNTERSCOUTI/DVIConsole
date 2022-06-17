@@ -13,7 +13,7 @@ namespace DVIConsole
             foreach (var line in news)
             {
                 this.News.Add(line);
-            } 
+            }
         }
 
         public List<string> News { get; set; } = new List<string>();
@@ -24,17 +24,17 @@ namespace DVIConsole
             var visibleOnConsole = allText.ToList().GetRange(0, 80);
             var notVisible = allText.ToList().GetRange(80, allText.Length - 80);
 
-            while (true)
-            {
-                Console.SetCursorPosition(2, 32);
-                Console.Write(new string(visibleOnConsole.ToArray()));
-                Thread.Sleep(200);
-                var c = visibleOnConsole[0];
-                visibleOnConsole.RemoveAt(0);
-                notVisible.Add(c);
-                visibleOnConsole.Add(notVisible[0]);
-                notVisible.RemoveAt(0);
-            }
+            // ADD WHILE TRUE LOOP TO WORK
+            /*
+            Console.SetCursorPosition(2, 32);
+            Console.Write(new string(visibleOnConsole.ToArray()));
+            Thread.Sleep(200);
+            var c = visibleOnConsole[0];
+            visibleOnConsole.RemoveAt(0);
+            notVisible.Add(c);
+            visibleOnConsole.Add(notVisible[0]);
+            notVisible.RemoveAt(0);
+            */
         }
     }
 }
