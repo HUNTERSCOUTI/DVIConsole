@@ -20,9 +20,9 @@ namespace DVIConsole
 
         public void RunTheLine(int index)
         {
-            var allText = string.Join(" ", News.Select(t => t + new string(' ', 8)));
-            var visibleOnConsole = allText.ToList().GetRange(index, 80);
-            var notVisible = allText.ToList().GetRange(80, allText.Length - 80);
+            string allText = string.Join(" ", News.Select(t => t + new string(' ', 8)));
+            List<char> visibleOnConsole = allText.ToList().GetRange(index, 80);
+            List<char> notVisible = allText.ToList().GetRange(80, allText.Length - 80);
 
 
             Console.SetCursorPosition(1, 34);
@@ -36,3 +36,6 @@ namespace DVIConsole
         }
     }
 }
+
+
+

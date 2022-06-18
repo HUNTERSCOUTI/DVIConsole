@@ -14,6 +14,22 @@ namespace DVIConsole
         private static RSS rss = new RSS();
         List<string> headLines = new List<string>();
 
+        public void RSSLoader()
+        {
+            const string url = "https://nordjyske.dk/rss/nyheder";
+
+            var reader = XmlReader.Create(url);
+            var feed = SyndicationFeed.Load(reader);
+
+            reader.Close();
+
+            foreach (SyndicationItem title in feed.Items)
+            {
+                String hl = title.Title.Text;
+                headLines.Add(hl);
+            }
+        }
+
         public void LayoutWriter()
         {
             Console.SetCursorPosition(0, 0);
@@ -41,21 +57,6 @@ namespace DVIConsole
             
         }
 
-        public void RSSLoader()
-        {
-            const string url = "https://nordjyske.dk/rss/nyheder";
-
-            var reader = XmlReader.Create(url);
-            var feed = SyndicationFeed.Load(reader);
-
-            reader.Close();
-
-            foreach (SyndicationItem title in feed.Items)
-            {
-                String hl = title.Title.Text;
-                headLines.Add(hl);
-            }
-        }
         public void StockWriter()
         {
             Console.ForegroundColor = ConsoleColor.Red;

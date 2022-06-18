@@ -14,10 +14,9 @@ namespace DVIConsole
             Console.CursorVisible = false;
 
             writer.LayoutWriter();
-            //writer.RSSWriter();
             Writer();
 
-            DateTime updateTime = DateTime.Now.AddMinutes(5); // Sets the update time to 5 minutes
+            DateTime updateTime = DateTime.Now.AddMinutes(5); // Tid mellem hver program opdatering
             DateTime rssMove = DateTime.Now.AddMilliseconds(200);
 
             int index = 0;
@@ -33,16 +32,15 @@ namespace DVIConsole
                     rssMove = DateTime.Now.AddMilliseconds(200);
                 }
 
-                if (DateTime.Now > updateTime) // Once the current time is more than the update time, it will reset
+                if (DateTime.Now > updateTime)
                 {
                     Console.Clear();
                     writer.LayoutWriter();
-                    //writer.RSSWriter();
                     Writer();
                     updateTime = DateTime.Now.AddMinutes(5);
                 }
 
-                if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break; // PRESS X TO EXIT
+                if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break;  // Tryk X for at lukke programmet
             }
         }
         public static void Writer()
