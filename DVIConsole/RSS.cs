@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace DVIConsole
 {
@@ -12,11 +11,12 @@ namespace DVIConsole
         {
             foreach (var line in news)
             {
-                this.News.Add(line);
+                News.Add(line);
             }
         }
 
         public List<string> News { get; set; } = new List<string>();
+
 
         public void RunTheLine(int index)
         {

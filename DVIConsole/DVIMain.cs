@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace DVIConsole
 {
     class DVIMain
     {
         private static DVIWriter writer = new DVIWriter();
-        private static RSS rss = new RSS();
         static void Main(string[] args)
         {
             Console.SetWindowSize(125, 35);
@@ -16,7 +14,7 @@ namespace DVIConsole
             writer.LayoutWriter();
             Writer();
 
-            DateTime updateTime = DateTime.Now.AddMinutes(5); // Tid mellem hver program opdatering
+            DateTime updateTime = DateTime.Now.AddSeconds(15); // Tid mellem hver program opdatering
             DateTime rssMove = DateTime.Now.AddMilliseconds(200);
 
             int index = 0;
@@ -37,7 +35,7 @@ namespace DVIConsole
                     Console.Clear();
                     writer.LayoutWriter();
                     Writer();
-                    updateTime = DateTime.Now.AddMinutes(5);
+                    updateTime = DateTime.Now.AddSeconds(15);
                 }
 
                 if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break;  // Tryk X for at lukke programmet
@@ -47,7 +45,6 @@ namespace DVIConsole
         {
             writer.TempAndHumWriter();
             writer.StockWriter();
-
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.ServiceModel.Syndication;
-using System.Threading;
 using System.Xml;
 
 namespace DVIConsole
@@ -11,8 +8,8 @@ namespace DVIConsole
     public class DVIWriter
     {
         private readonly DVIService.monitorSoapClient ds = new DVIService.monitorSoapClient();
-        private static RSS rss = new RSS();
-        List<string> headLines = new List<string>();
+        private readonly RSS rss = new RSS();
+        public List<string> headLines = new List<string>();
 
         public void RSSLoader()
         {
@@ -25,7 +22,7 @@ namespace DVIConsole
 
             foreach (SyndicationItem title in feed.Items)
             {
-                String hl = title.Title.Text;
+                string hl = title.Title.Text;
                 headLines.Add(hl);
             }
         }
