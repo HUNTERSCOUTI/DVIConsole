@@ -11,7 +11,6 @@ namespace DVIConsole
             Console.Title = "WineSys";
             Console.CursorVisible = false;
 
-            writer.LayoutWriter();
             Writer();
 
             DateTime updateTime = DateTime.Now.AddSeconds(15); // Tid mellem hver program opdatering
@@ -33,7 +32,6 @@ namespace DVIConsole
                 if (DateTime.Now > updateTime)
                 {
                     Console.Clear();
-                    writer.LayoutWriter();
                     Writer();
                     updateTime = DateTime.Now.AddSeconds(15);
                 }
@@ -43,6 +41,7 @@ namespace DVIConsole
         }
         public static void Writer()
         {
+            writer.LayoutWriter();
             writer.TempAndHumWriter();
             writer.StockWriter();
         }

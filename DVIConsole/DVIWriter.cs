@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ServiceModel.Syndication;
-using System.Xml;
 
 namespace DVIConsole
 {
@@ -9,24 +7,6 @@ namespace DVIConsole
     {
         private readonly DVIService.monitorSoapClient ds = new DVIService.monitorSoapClient();
         private readonly RSS rss = new RSS();
-
-        public List<string> headLines = new List<string>();
-
-        public void RSSLoader()
-        {
-            const string url = "https://nordjyske.dk/rss/nyheder";
-
-            var reader = XmlReader.Create(url);
-            var feed = SyndicationFeed.Load(reader);
-
-            reader.Close();
-
-            foreach (SyndicationItem title in feed.Items)
-            {
-                string hl = title.Title.Text;
-                headLines.Add(hl);
-            }
-        }
 
         public void LayoutWriter()
         {
@@ -41,18 +21,16 @@ namespace DVIConsole
                 Console.WriteLine(); //Goes one line down
             }
         }
-
         public void RSSWriter(int index)
         {
-            RSSLoader();
+            rss.RSSLoader();
             Console.ForegroundColor = ConsoleColor.Yellow;
 
-            foreach (var line in headLines)
+            foreach (var line in rss.HLHolder)
             {
-                rss.News.Add(line);
+                rss.headLines.Add(line);
             }
             rss.RunTheLine(index);
-            
         }
 
         public void StockWriter()
