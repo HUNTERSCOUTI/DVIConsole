@@ -9,6 +9,7 @@ namespace DVIConsole
     {
         private readonly DVIService.monitorSoapClient ds = new DVIService.monitorSoapClient();
         private readonly RSS rss = new RSS();
+
         public List<string> headLines = new List<string>();
 
         public void RSSLoader()

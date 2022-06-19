@@ -7,13 +7,6 @@ namespace DVIConsole
     public class RSS
     {
         public RSS() { }
-        public RSS(List<string> news)
-        {
-            foreach (var line in news)
-            {
-                News.Add(line);
-            }
-        }
 
         public List<string> News { get; set; } = new List<string>();
 
