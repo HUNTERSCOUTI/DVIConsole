@@ -6,7 +6,7 @@ namespace DVIConsole
     public class DVIWriter
     {
         private readonly DVIService.monitorSoapClient ds = new DVIService.monitorSoapClient();
-        private readonly RSS rss = new RSS();
+        private readonly RSS rss = new RSS();   
 
         public void LayoutWriter()
         {
@@ -25,11 +25,6 @@ namespace DVIConsole
         {
             rss.RSSLoader();
             Console.ForegroundColor = ConsoleColor.Yellow;
-
-            foreach (var line in rss.HLHolder)
-            {
-                rss.headLines.Add(line);
-            }
             rss.RunTheLine(index);
         }
 
@@ -65,7 +60,7 @@ namespace DVIConsole
 
             Console.SetCursorPosition(8, 8);
             Console.Write(ds.StockHumidity() + "° Celcius");
-
+                
             Console.SetCursorPosition(8, 12);
             Console.Write(ds.OutdoorTemp() + "° Celcius");
 

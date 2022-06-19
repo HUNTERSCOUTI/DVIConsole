@@ -8,7 +8,6 @@ namespace DVIConsole
 {
     public class RSS
     {
-        public List<string> headLines { get; set; } = new List<string>();
         public List<string> HLHolder = new List<string>(); // Headlines Holder
 
         public void RSSLoader()
@@ -28,7 +27,7 @@ namespace DVIConsole
         }
         public void RunTheLine(int index)
         {
-            string allText = string.Join(" ", headLines.Select(t => t + new string(' ', 8)));
+            string allText = string.Join(" ", HLHolder.Select(t => t + new string(' ', 8)));
             List<char> visibleOnConsole = allText.ToList().GetRange(index, 80);
             List<char> notVisible = allText.ToList().GetRange(80, allText.Length - 80);
 
