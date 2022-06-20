@@ -119,7 +119,7 @@ namespace DVIConsole
             "           |Press x to exit|          |                                   ".ToCharArray(),
             "            ---------------           |                                   ".ToCharArray(),
             "                                      |                                   ".ToCharArray(),
-            " Top Nyhed:                           |                                   ".ToCharArray(),
+            " Nyheder:                             |                                   ".ToCharArray(),
             " ---------------                      |                                   ".ToCharArray(),
             " LOADING...                           |                                   ".ToCharArray()//33 long
         };

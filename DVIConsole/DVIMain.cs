@@ -13,7 +13,7 @@ namespace DVIConsole
 
             Writer();
 
-            DateTime updateTime = DateTime.Now.AddSeconds(15); // Tid mellem hver program opdatering
+            DateTime updateTime = DateTime.Now.AddMinutes(5); // Tid mellem hver program opdatering
             DateTime rssMove = DateTime.Now.AddMilliseconds(200);
 
             int index = 0;
@@ -33,7 +33,7 @@ namespace DVIConsole
                 {
                     Console.Clear();
                     Writer();
-                    updateTime = DateTime.Now.AddSeconds(15);
+                    updateTime = DateTime.Now.AddMinutes(5);
                 }
 
                 if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X) break;  // Tryk X for at lukke programmet
